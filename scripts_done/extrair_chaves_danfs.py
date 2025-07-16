@@ -50,7 +50,7 @@ def extract_first_key_pdf_ocr(pdf_path, filename):
     ocr_texts = []
     rotations = [0, 90, 180, 270]
     try:
-        pages = convert_from_path(pdf_path, dpi=400)
+        pages = convert_from_path(pdf_path, dpi=600)
         for idx, page in enumerate(pages):
             for rot in rotations:
                 if rot == 0:
@@ -76,7 +76,7 @@ def main():
     Para arquivos onde não foi possível extrair a chave, salva o texto OCR extraído para análise posterior.
 
     Returns:
-        None. Salva o resultado em um arquivo JSON.
+        list: Lista de dicionários com os resultados extraídos.
     """
     result = []
     for filename in os.listdir(PDFS_FOLDER):
@@ -92,6 +92,7 @@ def main():
         json.dump(result, f, ensure_ascii=False, indent=2)
     print(f'Chaves extraídas salvas em {JSON_OUTPUT_FILE}')
     print(f'Textos OCR salvos em {OCR_FOLDER}/ para arquivos sem chave extraída.')
+    return result
 
 if __name__ == '__main__':
     main() 

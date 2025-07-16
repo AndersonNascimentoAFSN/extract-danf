@@ -1,3 +1,11 @@
+"""
+Extrai o número e a série das notas fiscais em PDFs usando OCR.
+
+Percorre todos os PDFs da pasta, executa OCR, busca padrões de número e série e salva o resultado em JSON.
+
+Returns:
+    None: Salva o resultado em um arquivo JSON.
+"""
 import os
 import re
 import json
@@ -14,7 +22,12 @@ os.makedirs(OCR_FOLDER, exist_ok=True)
 def clean_text(text):
     """
     Limpa e normaliza o texto para facilitar a busca por número e série.
-    Remove caracteres especiais e múltiplos espaços.
+
+    Args:
+        text (str): Texto a ser limpo.
+
+    Returns:
+        str: Texto limpo e normalizado.
     """
     cleaned = re.sub(r'[^\w\s\-\./º:]', '', text)
     cleaned = re.sub(r'\s+', ' ', cleaned).strip()
@@ -23,6 +36,12 @@ def clean_text(text):
 def preprocess_image(img):
     """
     Converte a imagem para escala de cinza e aplica autocontraste para melhorar o OCR.
+
+    Args:
+        img (PIL.Image): Imagem a ser processada.
+
+    Returns:
+        PIL.Image: Imagem processada em escala de cinza e autocontraste.
     """
     gray = img.convert('L')
     binarized = ImageOps.autocontrast(gray)
@@ -32,6 +51,12 @@ def find_numero_after_prefix(lines):
     """
     Procura o número da nota logo após encontrar uma linha com o prefixo 'NÚMERO'.
     Tenta extrair na mesma linha ou nas próximas duas linhas.
+
+    Args:
+        lines (list): Lista de linhas do texto OCR.
+
+    Returns:
+        str or None: Número encontrado ou None se não encontrado.
     """
     for i, line in enumerate(lines):
         if re.search(r'N[ÚU]MERO', line.upper()):
@@ -50,6 +75,12 @@ def find_best_number(lines):
     """
     Busca a sequência numérica de 6 a 9 dígitos mais frequente no texto,
     ignorando possíveis CNPJs e chaves de acesso.
+
+    Args:
+        lines (list): Lista de linhas do texto OCR.
+
+    Returns:
+        str or None: Número mais frequente encontrado ou None se não houver candidatos.
     """
     candidates = []
     for line in lines:
@@ -68,6 +99,13 @@ def extract_numero_serie_pdf_ocr(pdf_path, filename):
     Extrai o número e a série da nota fiscal de um PDF usando OCR.
     Tenta múltiplas rotações e pré-processamento para melhorar a acurácia.
     Salva o texto OCR para análise posterior em caso de falha.
+
+    Args:
+        pdf_path (str): Caminho do arquivo PDF.
+        filename (str): Nome do arquivo PDF para salvar texto OCR se necessário.
+
+    Returns:
+        tuple or None: (numero, serie) extraídos ou None se não encontrados.
     """
     ocr_texts = []
     rotations = [0, 90, 180, 270]
@@ -121,6 +159,9 @@ def main():
     """
     Processa todos os PDFs na pasta especificada, extraindo número e série de cada nota fiscal.
     Salva o resultado em um arquivo JSON e os textos OCR para análise posterior.
+
+    Returns:
+        list: Lista de dicionários com os resultados extraídos.
     """
     result = []
     for filename in os.listdir(PDFS_FOLDER):
@@ -140,9 +181,7 @@ def main():
     print(f'Resultado salvo em {JSON_OUTPUT_FILE}')
     if not result:
         print('Não foi possível extrair número e série de nenhum arquivo. Veja os textos OCR salvos para análise.')
+    return result
 
 if __name__ == '__main__':
-    """
-    Executa a extração de número e série de todas as notas fiscais em PDFs da pasta 'danfs'.
-    """
     main() 
