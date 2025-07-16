@@ -13,14 +13,16 @@ from pdf2image import convert_from_path
 from PIL import Image
 import pytesseract
 
+# Diretório raiz do projeto
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Pasta dos PDFs
-PDFS_FOLDER = 'danfs'
+PDFS_FOLDER = os.path.join(ROOT_DIR, 'danfs')
 # Regex para chave de acesso: 11 blocos de 4 dígitos separados por espaço, quebra de linha ou nada
 ACCESS_KEY_REGEX = r'((?:\d{4}[ \n]?){11})'
 # Arquivo de saída
-JSON_OUTPUT_FILE = 'chaves_danfs.json'
+JSON_OUTPUT_FILE = os.path.join(ROOT_DIR, 'chaves_danfs.json')
 # Pasta para salvar textos OCR
-OCR_FOLDER = 'ocr_texts'
+OCR_FOLDER = os.path.join(ROOT_DIR, 'ocr_texts')
 
 os.makedirs(OCR_FOLDER, exist_ok=True)
 

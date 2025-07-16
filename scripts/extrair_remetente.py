@@ -5,8 +5,9 @@ from pdf2image import convert_from_path
 from PIL import Image
 import pytesseract
 
-DANFS_FOLDER = 'danfs'
-JSON_OUTPUT_FILE = 'remetentes_cnpj.json'
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PDFS_FOLDER = os.path.join(ROOT_DIR, 'danfs')
+JSON_OUTPUT_FILE = os.path.join(ROOT_DIR, 'remetentes_cnpj.json')
 
 CNPJ_REGEX = r'\d{2}\.\d{3}\.\d{3}/\d{4}[- ]?\d{2}'
 CPF_REGEX = r'\d{3}\.\d{3}\.\d{3}-\d{2}'
@@ -84,9 +85,9 @@ def ocr_pdf(pdf_path):
 
 def main():
     resultados = []
-    for filename in os.listdir(DANFS_FOLDER):
+    for filename in os.listdir(PDFS_FOLDER):
         if filename.lower().endswith('.pdf'):
-            pdf_path = os.path.join(DANFS_FOLDER, filename)
+            pdf_path = os.path.join(PDFS_FOLDER, filename)
             texto = ocr_pdf(pdf_path)
             cnpj = extrair_cpf_cnpj(texto)
             razao_social = extrair_razao_social(texto, cnpj) if cnpj else None
