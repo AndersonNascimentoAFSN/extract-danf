@@ -13,9 +13,10 @@ from pdf2image import convert_from_path
 from PIL import Image, ImageOps
 import pytesseract
 
-PDFS_FOLDER = 'danfs'
-JSON_OUTPUT_FILE = 'numero_serie_todos.json'
-OCR_FOLDER = 'ocr_texts'
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PDFS_FOLDER = os.path.join(ROOT_DIR, 'danfs')
+JSON_OUTPUT_FILE = os.path.join(ROOT_DIR, 'numero_serie_todos.json')
+OCR_FOLDER = os.path.join(ROOT_DIR, 'ocr_texts')
 
 os.makedirs(OCR_FOLDER, exist_ok=True)
 

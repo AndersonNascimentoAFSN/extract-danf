@@ -13,16 +13,18 @@ from pdf2image import convert_from_path
 from PIL import Image
 import pytesseract
 
+# Diretório raiz do projeto
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Pasta dos PDFs
-PDFS_FOLDER = 'danfs'
+PDFS_FOLDER = os.path.join(ROOT_DIR, 'danfs')
 # Palavras-chave para fallback
 NATUREZA_KEYWORDS = [
     'VENDA', 'REMESSA', 'DEVOLUÇÃO', 'PROD', 'MERC', 'ADQ', 'RECEB', 'ENCOM', 'ENTREGA', 'COMBUS', 'LUBRIF', 'DEST', 'CONSUM', 'FINAL', '6102', '6656', 'IND', 'CTA', 'ORD', 'SUB', 'TRIB'
 ]
 # Arquivo de saída
-JSON_OUTPUT_FILE = 'natureza_operacao.json'
+JSON_OUTPUT_FILE = os.path.join(ROOT_DIR, 'natureza_operacao.json')
 # Pasta para salvar textos OCR
-OCR_FOLDER = 'ocr_texts'
+OCR_FOLDER = os.path.join(ROOT_DIR, 'ocr_texts')
 
 os.makedirs(OCR_FOLDER, exist_ok=True)
 

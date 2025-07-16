@@ -5,7 +5,10 @@ chaves_danfs.json
 natureza_operacao.json
 numero_serie_todos.json
 numero_serie_todos.json
+remetentes_cnpj.json
 
 danfs/
 nfs/
+venv
+__pycache__/
 temp_imgs/
